@@ -28,7 +28,10 @@ export class AppComponent implements OnInit{
           translate.use('en');
           document.querySelector('body').classList.remove('rtl');
         }
-        if((event['url'] == '/user-pages/login') || (event['url'] == '/user-pages/login-2') || (event['url'] == '/user-pages/register') || (event['url'] == '/user-pages/register-2') || (event['url'] == '/user-pages/lock-screen') || (event['url'] == '/error-pages/404') || (event['url'] == '/error-pages/500') ) {
+        if((event['url'] == '/user-pages/login') || (event['url'] == '/user-pages/login-2') 
+        || (event['url'] == '/user-pages/register') || (event['url'] == '/user-pages/register-2') 
+        || (event['url'] == '/user-pages/lock-screen') || (event['url'] == '/error-pages/404') 
+        || (event['url'] == '/error-pages/500') || (event['url'] == '/' || (event['url'] == '')) ) {
           this.showSidebar = false;
           this.showNavbar = false;
           this.showFooter = false;
