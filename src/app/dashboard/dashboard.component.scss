@@ -119,7 +119,7 @@
               align-items: center;
 
               i {
-                  color: #626262;
+                  color: #ffffff;
                   margin-right: 15px;
                   font-size: 18px;
                   .rtl & {
@@ -538,7 +538,7 @@
         border-radius: 4px;
         background-color: #ecf0f4;
         font-size: 20px;
-        color: #626262;
+        color: #ffffff;
 
         @media screen and (max-width: 360px) {
             display: none;

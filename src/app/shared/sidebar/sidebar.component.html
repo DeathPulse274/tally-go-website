@@ -34,22 +34,25 @@
     <li class="nav-item">
 
       <a class="nav-link" href="https://www.tallysolutions.com/" target="_blank" rel="noopener noreferrer">
-        <span class="menu-title">Manage Tally.NET account</span>
-        <i class="icon-screen-desktop menu-icon"></i>
+        <span class="menu-title">
+          <div>Manage Tally.NET</div>
+          <div>account</div>
+        </span>
+        <i class="icon-logout menu-icon"></i>
       </a>
     </li>
     <hr>
     <li class="nav-item" [ngClass]="{ 'active': download.isActive }">
       <a class="nav-link" routerLink="" routerLinkActive #download="routerLinkActive" [routerLinkActiveOptions]="{exact:
         true}">
-        <span class="menu-title">Download client</span>
-        <i class="mdi mdi-download menu-icon"></i>
+        <span class="menu-title">TallyPrime on AWS Client</span>
+        <i class="icon-reload menu-icon"></i>
       </a>
     </li>
     <li class="nav-item" [ngClass]="{ 'active': download.isActive }">
       <a class="nav-link" href="https://www.help.tallysolutions.com/" target="_blank" rel="noopener noreferrer">
         <span class="menu-title">Help</span>
-        <i class="mdi mdi-download menu-icon"></i>
+        <i class="icon-question menu-icon"></i>
       </a>
     </li>
 
