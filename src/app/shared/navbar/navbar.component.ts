@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -11,14 +12,20 @@ import {TranslateService} from '@ngx-translate/core';
 export class NavbarComponent implements OnInit {
   public iconOnlyToggled = false;
   public sidebarToggled = false;
+  username: string;
 
-  constructor(config: NgbDropdownConfig, translate: TranslateService) {
+  constructor(config: NgbDropdownConfig, translate: TranslateService, private router: Router) {
     config.placement = 'bottom-right';
     // this language will be used as a fallback when a translation isn't found in the current language
     translate.setDefaultLang('en');
   }
 
   ngOnInit() {
+    this.username = sessionStorage.getItem('username');
+  }
+  logout() {
+    sessionStorage.clear();
+    this.router.navigate(['/user-pages/login']);
   }
 
   // toggle sidebar in small devices
@@ -29,16 +36,16 @@ export class NavbarComponent implements OnInit {
   // toggle sidebar
   toggleSidebar() {
     let body = document.querySelector('body');
-    if((!body.classList.contains('sidebar-toggle-display')) && (!body.classList.contains('sidebar-absolute'))) {
+    if ((!body.classList.contains('sidebar-toggle-display')) && (!body.classList.contains('sidebar-absolute'))) {
       this.iconOnlyToggled = !this.iconOnlyToggled;
-      if(this.iconOnlyToggled) {
+      if (this.iconOnlyToggled) {
         body.classList.add('sidebar-icon-only');
       } else {
         body.classList.remove('sidebar-icon-only');
       }
     } else {
       this.sidebarToggled = !this.sidebarToggled;
-      if(this.sidebarToggled) {
+      if (this.sidebarToggled) {
         body.classList.add('sidebar-hidden');
       } else {
         body.classList.remove('sidebar-hidden');
@@ -50,5 +57,6 @@ export class NavbarComponent implements OnInit {
   toggleRightSidebar() {
     document.querySelector('#right-sidebar').classList.toggle('open');
   }
+
 
 }

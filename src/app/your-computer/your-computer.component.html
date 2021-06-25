@@ -6,7 +6,7 @@
                 <p class="card-description">
                     Add class <code>.table-hover</code>
                 </p> -->
-                <div class="table-responsive">
+                <div class="">
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -28,35 +28,48 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor='let users of userBody'>
+                            <tr *ngFor='let users of mergedList'>
                                 <td class="py-1">
-                                    {{users.office}}
+                                    {{users.office_name}}
                                 </td>
                                 <td>
-                                    {{users.organisation_name}}
+                                    {{users.account_name}}
                                 </td>
                                 <td>
                                     {{users.tallyGo_product}}
                                 </td>
                                 <td class="text-danger">
-                                    <button class="btn btn-outline-danger btn-sm ">{{users.computer_status}}</button>
+                                    <button
+                                        [ngClass]="users.container_status === 'active' ? 'btn btn-outline-success btn-sm' : 'btn btn-outline-danger btn-sm'">{{users.container_status}}</button>
 
                                 </td>
                                 <td style="cursor: pointer;">
 
                                     <div class="dropdown">
                                         <a class=" dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false">
-                                            <i class="fa fa-cog" aria-hidden="true"></i>
+                                            style="color: #808080;" aria-haspopup="true" aria-expanded="false">
+                                            <i class="icon-settings" aria-hidden="true"></i>
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a *ngIf="users.is_owner == true || users.admin == true"
-                                                class="dropdown-item" (click)="restartComputer('0366da33')">Restart
-                                                Machine</a>
-                                            <a (click)="restartLaptop('0366da33')" class="dropdown-item">Restart
+                                            <a (click)="restartLaptopModal(restart_your_computer,users.uuid)"
+                                                class="dropdown-item">Restart your
                                                 computer</a>
-                                            <a class="dropdown-item" (click)="manageUsersModal(content, users)">Manage
+                                            <a class="dropdown-item"
+                                                (click)="stopMachineModal(stop_all_machine,users.uuid)">Stop all
+                                                computers</a>
+                                            <a *ngIf="users.is_owner == 1 || users.is_admin == 1" class="dropdown-item"
+                                                (click)="restartMachineModal(restart_machine,users.uuid)">Restart all
+                                                computers</a>
+                                            <hr>
+                                            <a *ngIf="users.is_owner == 1" class="dropdown-item"
+                                                (click)="manageUsersModal(content, users)">Manage
                                                 Users</a>
+                                            <hr>
+                                            <a class="dropdown-item">Manage TallyPrime Product Releases </a>
+                                            <hr>
+
+                                            <a class="dropdown-item">Manage Backup</a>
+
                                         </div>
                                     </div>
                                 </td>
@@ -73,7 +86,7 @@
 <!--users modal-->
 <ng-template #content let-modal>
     <div class="modal-header">
-        <h4 class="modal-title">Manage Users></h4>
+        <h4 style="text-align: center;" class="modal-title">List of Computer Users</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -81,15 +94,14 @@
     <div class="modal-body">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">{{office}}</h4>
-                <p class="card-description">
-                    {{singleOrMultiUser}} <code>content to show about VM's</code>
-                </p>
-                <p style="text-align: right;">computer status: <code style="color: green;">{{computerStatus}}</code></p>
-                <div class="table-responsive">
+                <h4 class="card-title" style="font-weight: 600;">{{office}}</h4>
+                <div class='underline-all'></div>
+                <!-- <p style="text-align: right;">computer status: <code style="color: green;">{{computerStatus}}</code></p> -->
+                <div class="">
                     <table class="table table-hover">
                         <thead>
                             <tr>
+                                <th>#</th>
                                 <th>
                                     User Id
                                 </th>
@@ -109,73 +121,49 @@
                         </thead>
                         <tbody>
                             <!-- <tr *ngFor='let users of userBody'> -->
-                            <tr>
+                            <tr *ngFor='let manageUsers of managedUsersList; let i = index'>
+                                <td>{{i}}</td>
                                 <td class="py-1">
-                                    Dinesh.prasad@tallysolutions.com
+                                    {{manageUsers.email_id}}
                                 </td>
                                 <td>
-                                    TallySolutions
+                                    {{accountName}}
                                 </td>
                                 <td>
-                                    TallyGoUSer1
+                                    {{manageUsers.computer_name}}
                                 </td>
                                 <td class="text-danger">
-                                    <button class="btn btn-outline-danger btn-sm ">Deactive</button>
+                                    <button
+                                        [ngClass]="manageUsers.user_status === 'active' ? 'btn btn-outline-success btn-sm' : 'btn btn-outline-danger btn-sm'">{{manageUsers.user_status}}</button>
 
                                 </td>
-                                <td style="cursor: pointer;">
+                                <td *ngIf="manageUsers.is_owner != 1" style="cursor: pointer;">
 
                                     <div class="dropdown">
-                                        <a class=" dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false">
-                                            <i class="fa fa-cog" aria-hidden="true"></i>
+                                        <a class=" dropdown-toggle" style="color:#808080" id="dropdownMenuButton"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="icon-settings" aria-hidden="true"></i>
                                         </a>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" (click)="restartComputer('0366da33')">Edit
+                                            <a (click)="editUsersModal(edit_users,manageUsers)"
+                                                class="dropdown-item">Edit
                                                 User</a>
-                                            <a (click)="restartLaptop('0366da33')" class="dropdown-item">Activate
+                                            <a (click)="activateUsersModal(activateUser,manageUsers)"
+                                                class="dropdown-item">Activate
                                                 User</a>
-                                            <a class="dropdown-item" (click)="manageUsersModal(content)">Delete
-                                                Computer</a>
+                                            <a class="dropdown-item"
+                                                (click)="deactivateUsersModal(deactivateUser,manageUsers)">Deactivate
+                                                User</a>
                                         </div>
                                     </div>
                                 </td>
+
                             </tr>
 
-                            <tr>
-                                <td class="py-1">
-                                    bangaloreadmin@gmail.com
-                                </td>
-                                <td>
-                                    TallySolutions
-                                </td>
-                                <td>
-                                    TallyGoUSer2
-                                </td>
-                                <td class="text-danger">
-                                    <button class="btn btn-outline-success btn-sm ">Active</button>
 
-                                </td>
-                                <td style="cursor: pointer;">
-
-                                    <div class="dropdown">
-                                        <a class=" dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown"
-                                            aria-haspopup="true" aria-expanded="false">
-                                            <i class="fa fa-cog" aria-hidden="true"></i>
-                                        </a>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item" (click)="restartComputer('0366da32')">Edit
-                                                User</a>
-                                            <a (click)="restartLaptop('0366da32')" class="dropdown-item">Activate
-                                                User</a>
-                                            <a class="dropdown-item" (click)="manageUsersModal(content)">Delete
-                                                Computer</a>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
                             <hr>
-                            <tr><i class="mdi mdi-plus"> Add Computer for a user</i></tr>
+                            <tr><i style="cursor: pointer;" class="mdi mdi-plus" (click)="addUsers(add_users)"> Add
+                                    Computer for a user</i></tr>
                         </tbody>
                     </table>
                 </div>
@@ -186,3 +174,275 @@
         <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
     </div>
 </ng-template>
+
+<ng-template #restart_machine let-modal>
+    <h4 class="modal-title">
+        <p>Restart Machine</p>
+    </h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="modal-body">
+        <p>You are trying to restart machine . All users sessions will be closed and Machine will restart</p>
+        <br>
+        <p>It will take 5-10 minutes to complete the restart</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="restartComputer()">Restart</button>
+    </div>
+</ng-template>
+
+<!--Activate User-->
+<ng-template #activateUser let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Activate User : {{managedUserId}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>You are activating user access the computer "Office"</p>
+        <p>User will be able to login to the computer after activation.</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="activateUsers()">Activate User</button>
+    </div>
+</ng-template>
+<!--Activate User ends-->
+
+<!--Deactivate User-->
+<ng-template #deactivateUser let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <p style="color:red">Deactivate User :</p> {{managedUserId}}
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>You are deactivating user access the computer "Office"</p>
+        <p>It will effort from the next login</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="activateUsers()">Deactivate User</button>
+    </div>
+</ng-template>
+<!-- Deactivate User-->
+
+<!--Stop All machine-->
+<ng-template #stop_all_machine let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <p>Stop All machine :</p>
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>Stop all machine</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="stopAllMachine()">Stop</button>
+    </div>
+</ng-template>
+<!--Stop All machine-->
+
+<!--Restart ypur computer-->
+<ng-template #restart_your_computer let-modal>
+    <h4 class="modal-title">
+        <p>Restart your computer : "office"</p>
+    </h4>
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p>you are trying to restart your computer. it will take 5-10</p>
+        <p>minutes to complete the restart</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="restartYourComputer()">Restart</button>
+    </div>
+</ng-template>
+<!-- Restart your computer-->
+
+<!--add users-->
+<ng-template #add_users let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <p>Add users</p>
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <!-- <h4 class="card-title">Horizontal Form</h4>
+                <p class="card-description">
+                    Horizontal form layout
+                </p> -->
+                <div class="forms-sample">
+                    <div class="form-group row">
+                        <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Email</label>
+                        <div class="col-sm-9">
+                            <div class="dropdown show">
+
+
+                                <select class="form-control " data-show-subtext="true" data-live-search="true"
+                                    [(ngModel)]="ListUserEmailId">
+                                    <option *ngFor="let userList of listUserList" [value]="userList.email_id">
+                                        {{userList.email_id}}</option>
+                                </select>
+                                <div style="margin-top: 10px;">
+                                    <input type="text" class="form-control" placeholder="Email"
+                                        [(ngModel)]="textUserEmailId">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <!-- <div>
+                            <label for="browser">Email:</label>
+                            <input list="browsers" name="browser" id="browser">
+                            <datalist id="browsers">
+                                <option *ngFor="let userList of listUserList" [value]="userList.email_id">
+                            </datalist>
+                        </div> -->
+                    </div>
+                    <hr>
+                    <div class="form-group row">
+                        <label for="exampleInputPassword2" class="col-sm-3 col-form-label">User Role</label>
+                        <div class="col-sm-9">
+                            <div class="form-group form-check">
+                                <!-- <input type="checkbox" class="form-check-input" [checked]="addUserIsAdmin"
+                                    (change)="addUserIsAdmin = !addUserIsAdmin" id="exampleCheck1"> -->
+                                <!-- <label class="form-check-label" for="exampleCheck1">is admin</label> -->
+                                <select class="form-control " data-show-subtext="true" data-live-search="true"
+                                    [(ngModel)]="addUserIsAdmin">
+                                    <option [value]="1">
+                                        Admin</option>
+                                    <option [value]="0">Basic User</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group row">
+                        <label for="exampleInputConfirmPassword2" class="col-sm-3 col-form-label">Re
+                            Password</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" id="exampleInputConfirmPassword2"
+                                placeholder="Password">
+                        </div>
+                    </div> -->
+                    <!-- <div class="form-check form-check-flat form-check-primary">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input">
+                            Remember me
+                            <i class="input-helper"></i>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary mr-2">Submit</button> -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="createUsers()">Add</button>
+    </div>
+</ng-template>
+<!--add users-->
+
+<!--edit users-->
+<ng-template #edit_users let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <p>Add users</p>
+        </h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="card">
+            <div class="card-body">
+                <!-- <h4 class="card-title">Horizontal Form</h4>
+                <p class="card-description">
+                    Horizontal form layout
+                </p> -->
+                <div class="forms-sample">
+                    <div class="form-group row">
+                        <label for="exampleInputUsername2" class="col-sm-3 col-form-label">Email</label>
+                        <div class="col-sm-9">
+                            <div class="dropdown show">
+
+
+                                <select class="form-control " data-show-subtext="true" data-live-search="true"
+                                    [(ngModel)]="ListUserEmailId">
+                                    <option *ngFor="let userList of listUserList" [value]="userList.email_id">
+                                        {{userList.email_id}}</option>
+                                </select>
+                                <div style="margin-top: 10px;">
+                                    <input type="text" class="form-control" placeholder="Email"
+                                        [(ngModel)]="editedUserEmailId">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group row">
+                        <label for="exampleInputPassword2" class="col-sm-3 col-form-label">User Role</label>
+                        <div class="col-sm-9">
+                            <div class="form-group form-check">
+                                <!-- <input type="checkbox" class="form-check-input" [checked]="addUserIsAdmin"
+                                    (change)="addUserIsAdmin = !addUserIsAdmin" id="exampleCheck1"> -->
+                                <!-- <label class="form-check-label" for="exampleCheck1">is admin</label> -->
+                                <select class="form-control " data-show-subtext="true" data-live-search="true"
+                                    [(ngModel)]="editedUserIsAdmin">
+                                    <option [value]="1">
+                                        Admin</option>
+                                    <option [value]="0">Basic User</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="form-group row">
+                        <label for="exampleInputConfirmPassword2" class="col-sm-3 col-form-label">Re
+                            Password</label>
+                        <div class="col-sm-9">
+                            <input type="password" class="form-control" id="exampleInputConfirmPassword2"
+                                placeholder="Password">
+                        </div>
+                    </div> -->
+                    <!-- <div class="form-check form-check-flat form-check-primary">
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input">
+                            Remember me
+                            <i class="input-helper"></i>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary mr-2">Submit</button> -->
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.close('Close click')">Cancel</button>
+        <button type="button" class="btn btn-primary">Edit</button>
+    </div>
+</ng-template>
+<!--edit users-->

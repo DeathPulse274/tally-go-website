@@ -41,7 +41,7 @@ $colors: (
 
 
 $theme-colors: (
-  primary:        #1bdbe0,
+  primary:        #2f67b1,
   secondary:      #d8d8d8,
   success:        #38ce3c,
   info:           #8e32e9,
@@ -85,7 +85,7 @@ $social-colors: (
 
 ////////// FONTS//
 
-$type1: 'Open Sans',
+$type1: 'Roboto',
 sans-serif;
 
 $font-weight-light: 300;
@@ -113,8 +113,8 @@ $sidebar-light-menu-active-color: theme-color(main-color);
 $sidebar-light-menu-hover-bg: darken($sidebar-light-bg, 1%);
 $sidebar-light-menu-hover-color: darken($sidebar-light-menu-color, 10%);
 $sidebar-light-submenu-hover-color: darken($sidebar-light-submenu-color, 20%);
-$sidebar-light-menu-icon-color: #626262;
-$sidebar-light-menu-arrow-color: #626262;
+$sidebar-light-menu-icon-color: #ffffff;
+$sidebar-light-menu-arrow-color: #ffffff;
 $sidebar-light-menu-border-color: #f2edf3;
 
 $sidebar-dark-bg: #2f67b1;
@@ -126,8 +126,8 @@ $sidebar-dark-menu-hover-color: color(white);
 $sidebar-dark-submenu-color: $sidebar-dark-menu-color;
 $sidebar-dark-submenu-hover-bg: initial;
 $sidebar-dark-submenu-hover-color: darken($sidebar-dark-submenu-color, 30%);
-$sidebar-dark-menu-icon-color: #626262;
-$sidebar-dark-menu-arrow-color: #626262;
+$sidebar-dark-menu-icon-color: #ffffff;
+$sidebar-dark-menu-arrow-color: #ffffff;
 
 $sidebar-nav-category-color: theme-color(main-color);
 $sidebar-nav-category-padding: 1rem 0 1.125rem;
@@ -163,7 +163,7 @@ $icon-only-menu-bg-dark: $sidebar-dark-menu-hover-bg;
 ///////// NAVBAR ////////
 
 $navbar-bg: #fff;
-$navbar-height: 70px;
+$navbar-height: 100px;
 $navbar-menu-color: #111111;
 $navbar-menu-icon-color: #ffffff;
 

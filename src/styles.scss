@@ -74,6 +74,16 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
 /* === Layout === */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
 @import "./assets/scss/layout";
 
 @import '~bootstrap/dist/css/bootstrap.min.css';
+
+
+.underline-all {
+    width: 30px;
+    border-top: 2px solid #ff8000;
+    height: 1px;
+    position: absolute;
+    margin-top: 9px;
+  }
